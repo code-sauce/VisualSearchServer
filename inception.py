@@ -2,7 +2,7 @@ import time,glob,re,sys,logging,os,tempfile
 import numpy as np
 import tensorflow as tf
 from scipy import spatial
-from settings import AWS,INDEX_PATH,CONFIG_PATH,DATA_PATH,BUCKET_NAME,PREFIX
+from settings import AWS, INDEX_PATH, CONFIG_PATH, DATA_PATH, BUCKET_NAME,PREFIX, MODEL_GRAPH_PATH
 try:
     from settings import DEMO
 except ImportError:
@@ -63,7 +63,7 @@ class NodeLookup(object):
 
 
 def load_network(png=False):
-    with gfile.FastGFile(CONFIG_PATH+'/data/network.pb', 'rb') as f:
+    with gfile.FastGFile(MODEL_GRAPH_PATH+'output_graph.pb', 'rb') as f:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(f.read())
         if png:

@@ -2,6 +2,7 @@ import os,sys,logging,time,shutil
 from fabric.state import env
 from fabric.api import env,local,run,sudo,put,cd,lcd,puts,task,get,hide
 from settings import BUCKET_NAME,DATA_PATH,INDEX_PATH
+import inception
 try:
     import inception
 except ImportError:
@@ -104,8 +105,18 @@ def demo_nyc():
     local('python server.py &')
     local('tail -f logs/server.log')
 
-
-
+@task
+def demo_sr_shoes():
+    """
+    Start Demo using precomputed index for 700 images for shoes
+    """
+    local('aws s3api get-object --bucket aub3visualsearch --key "nyc_index.tar.gz" --request-payer requester /mnt/nyc_index.tar.gz')
+    local('cd /mnt/;tar -zxvf nyc_index.tar.gz')
+    # local('echo "\nDEMO=\'sr_shoe_images\'" >> settings.py')
+    local('echo "\DATA_PATH=\'/Users/saurabhjain/tensorflow/data/train/shoes/\'" >> settings.py')
+    local('echo "\nINDEX_PATH=\'/Users/saurabhjain/tensorflow/data/visual_search_index/\'" >> settings.py')
+    local('python server.py &')
+    local('tail -f logs/server.log')
 
 
 @task
@@ -114,11 +125,14 @@ def index():
     Index images
     """
     logging.info("Starting with images present in {} storing index in {}".format(DATA_PATH,INDEX_PATH))
-    try:
-        os.mkdir(INDEX_PATH)
-    except:
-        print "Could not created {}, if its on /mnt/ have you set correct permissions?".format(INDEX_PATH)
-        raise ValueError
+    if os.path.exists(INDEX_PATH):
+        print "{} already exists".format(INDEX_PATH)
+    else:
+        try:
+            os.mkdir(INDEX_PATH)
+        except:
+            print "Could not created {}, if its on /mnt/ have you set correct permissions?".format(INDEX_PATH)
+            raise ValueError
     inception.load_network()
     count = 0
     start = time.time()
