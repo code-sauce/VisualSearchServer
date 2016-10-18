@@ -17,6 +17,7 @@ def search():
     image_data = base64.decodestring(image_url[22:])
     pool3 = sess.graph.get_tensor_by_name('incept/pool_3:0')
     pool3_features = sess.run(pool3,{png_data: image_data})
+    print nearest(np.squeeze(pool3_features),index,files)
     results = [k.split('/')[-1] for k in nearest(np.squeeze(pool3_features),index,files)]
     for fname in results:
         download(fname)

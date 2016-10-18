@@ -7,6 +7,7 @@ CONFIG_PATH = __file__.split('settings.py')[0]
 
 BUCKET_NAME = "aub3visualsearch"
 PREFIX = "nyc"
-MODEL_GRAPH_PATH = '/Users/saurabhjain/tensorflow/models/inception/'
-INDEX_PATH = "/Users/saurabhjain/tensorflow/data/visual_search_index/"
-DATA_PATH ="/Users/saurabhjain/tensorflow/data/train/shoes/"  # all shoes images
+MODEL_GRAPH_PATH = '/Users/saurabhjain/tensorflow/data_dresses/output/'
+#INDEX_PATH = "/Users/saurabhjain/tensorflow/data_dresses/visual_search_index/"
+INDEX_PATH = "/Users/saurabhjain/Desktop/dresses_index/"
+DATA_PATH ="/Users/saurabhjain/Desktop/dresses"
