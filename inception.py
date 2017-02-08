@@ -66,6 +66,7 @@ def load_network(png=False):
     with gfile.FastGFile(MODEL_GRAPH_PATH+'output_graph.pb', 'rb') as f:
         graph_def = tf.GraphDef()
         graph_def.ParseFromString(f.read())
+        del(graph_def.node[1].attr["dct_method"])
         if png:
             png_data = tf.placeholder(tf.string, shape=[])
             decoded_png = tf.image.decode_png(png_data, channels=3)
